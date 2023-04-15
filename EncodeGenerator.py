@@ -23,7 +23,8 @@ imgList = []
 studentIds = []
 for path in pathList:
     imgList.append(cv2.imread(os.path.join(folderPath, path)))
-    # print(os.path.splitext(path)[0])
+    # print('imgList:', imgList)
+    # print(os.path.splitext(path)[0]) # ('6388176', '.jpg')
     studentIds.append(os.path.splitext(path)[0])
     
     # Add Images folder in the Storage
@@ -40,6 +41,7 @@ def findEncoding(imagesList):
         # Convert BGR (opencv) to RGB (face-recog)
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         encode = face_recognition.face_encodings(img)[0]
+        # print("encode:", encode)
         encodeList.append(encode)
     return encodeList
 
@@ -47,6 +49,7 @@ print("Encoding Started...")
 encodeListKnown = findEncoding(imgList)
 # Map Encoding lists with Ids
 encodeListKnownWithIds = [encodeListKnown, studentIds]
+# print(encodeListKnownWithIds)
 print("Encoding Completed!")
 
 # Map Encoding lists with Ids into the file (write)

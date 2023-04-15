@@ -12,7 +12,7 @@ from datetime import timedelta
 import numpy as np
 from datetime import datetime
 
-
+# Connect to Firebase
 cred = credentials.Certificate("serviceAccountKey.json")
 firebase_admin.initialize_app(cred, {
     "databaseURL" : "https://facelogin-5c710-default-rtdb.firebaseio.com/",
@@ -21,9 +21,10 @@ firebase_admin.initialize_app(cred, {
 
 bucket = storage.bucket()
 
+
 cap = cv2.VideoCapture(0)
-cap.set(3, 640)
-cap.set(4, 480)
+cap.set(3, 640) # Set Width
+cap.set(4, 480) # Set Height
 
 imgBackground = cv2.imread('Resources/background.png')
 
@@ -41,7 +42,7 @@ file = open('EncodeFile.p', 'rb')
 encodeListKnownWithIds = pickle.load(file)
 file.close()
 encodeListKnown, studentIds = encodeListKnownWithIds
-# print(studentIds)
+# print(encodeListKnownWithIds)
 print("Encode File Loaded")
 
 modeType = 0
@@ -58,6 +59,7 @@ while True:
     faceCurFrame = face_recognition.face_locations(imgS)
     encodeCurFrame = face_recognition.face_encodings(imgS, faceCurFrame)
 
+    # Overlay the img (detected) and mode with the background image
     imgBackground[162:162 + 480, 55:55 + 640] = img
     imgBackground[44:44 + 633, 808:808 + 414] = imgModeList[modeType]
 
@@ -82,7 +84,7 @@ while True:
                     # imgBackground = cvzone.cornerRect(imgBackground, bbox, rt=0)
                     id = studentIds[matchIndex]
                     if counter == 0:
-                        cv2.imshow("Face Attendance", imgBackground)
+                        cv2.imshow("FaceRec", imgBackground)
                         cv2.waitKey(1)
                         counter = 1
                         modeType = 1
@@ -100,13 +102,14 @@ while True:
                 print(studentInfo)
 
                 # Get the Image from the storage
-                blobby = bucket.get_blob(f'Images/{id}.jpg')
-                print(blobby)
-                array = np.frombuffer(blobby.download_as_bytes(), np.uint8)
-                imgStudent = cv2.imdecode(array, cv2.COLOR_BGRA2BGR)
-                imgBackground[175:175 + 216, 909:909 + 216] = imgStudent
-                # except Exception as e:
-                #     print("ERROR : "+str(e))
+                try:
+                    blobby = bucket.get_blob(f'Images/{id}.jpg')
+                    print("blobbly:", blobby)
+                    array = np.frombuffer(blobby.download_as_bytes(), np.uint8)
+                    imgStudent = cv2.imdecode(array, cv2.COLOR_BGRA2BGR)
+                    imgBackground[175:175 + 216, 909:909 + 216] = imgStudent
+                except Exception as e:
+                    print("ERROR : "+str(e))
                 
                 # Update data of attendance                
                 ref = db.reference(f'Students/{id}')
@@ -128,5 +131,5 @@ while True:
         modeType = 0
         counter = 0
 
-    cv2.imshow("Face Attendance", imgBackground)
+    cv2.imshow("FaceRec", imgBackground)
     cv2.waitKey(1)
