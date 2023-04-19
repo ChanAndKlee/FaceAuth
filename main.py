@@ -75,7 +75,7 @@ while True:
 
             if matches[matchIndex]:
                 # Set new threshold leads to more accurate result
-                if faceDis[matchIndex] < 0.75:
+                if faceDis[matchIndex] < 0.45:
                     # print("Known Face Detected")
                     # print(studentIds[matchIndex])
                     y1, x2, y2, x1 = faceLoc
@@ -88,6 +88,8 @@ while True:
                         cv2.waitKey(1)
                         counter = 1
                         modeType = 1
+                else:
+                    modeType = 2
             else:
                 modeType = 2
 
@@ -103,7 +105,7 @@ while True:
 
                 # Get the Image from the storage
                 try:
-                    blobby = bucket.get_blob(f'Images/{id}.jpg')
+                    blobby = bucket.blob(f'Images/{id}.jpg')
                     print("blobbly:", blobby)
                     array = np.frombuffer(blobby.download_as_bytes(), np.uint8)
                     imgStudent = cv2.imdecode(array, cv2.COLOR_BGRA2BGR)
