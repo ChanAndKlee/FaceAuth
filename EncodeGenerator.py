@@ -45,7 +45,7 @@ def findEncoding(imagesList):
         encodeList.append(encode)
     return encodeList
 
-print("Encoding Started...")
+print(f"====================\nEncoding Started...")
 encodeListKnown = findEncoding(imgList)
 # Map Encoding lists with Ids
 encodeListKnownWithIds = [encodeListKnown, studentIds]
@@ -56,4 +56,4 @@ print("Encoding Completed!")
 file = open("EncodeFile.p", "wb")
 pickle.dump(encodeListKnownWithIds, file)
 file.close()
-print("File Saved =)")
+print(f"File Saved =)\n====================")
