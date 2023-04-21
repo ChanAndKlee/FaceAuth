@@ -1,3 +1,7 @@
+###
+# Run this file just only when it has updated user image
+###
+
 import os
 import cv2
 import face_recognition
@@ -10,7 +14,6 @@ from firebase_admin import storage
 cred = credentials.Certificate("serviceAccountKey.json")
 firebase_admin.initialize_app(cred, {
     "databaseURL" : "https://facelogin-5c710-default-rtdb.firebaseio.com/",
-    "storageBucket" : "facelogin-5c710.appspot.com",
 })
 
 # Encode Images one-by-one
@@ -41,7 +44,6 @@ def findEncoding(imagesList):
         # Convert BGR (opencv) to RGB (face-recog)
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         encode = face_recognition.face_encodings(img)[0]
-        # print("encode:", encode)
         encodeList.append(encode)
     return encodeList
 
@@ -49,7 +51,6 @@ print(f"====================\nEncoding Started...")
 encodeListKnown = findEncoding(imgList)
 # Map Encoding lists with Ids
 encodeListKnownWithIds = [encodeListKnown, studentIds]
-# print(encodeListKnownWithIds)
 print("Encoding Completed!")
 
 # Map Encoding lists with Ids into the file (write)

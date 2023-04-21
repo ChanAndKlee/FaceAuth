@@ -1,3 +1,7 @@
+###
+# Run this file just only when it has updated user data
+###
+
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import db
@@ -56,8 +60,19 @@ data = {
         "year" : 10,
         "last_authenticated" : "2022-12-26 11:45:00"
     },
+    "6388177":
+    {
+        "name" : "Prayut Chan-o-cha",
+        "major" : "ICT",
+        "starting_year" : "2000",
+        "bloodType" : "O",
+        "year" : 10,
+        "last_authenticated" : "2022-12-26 11:45:00"
+    },
 }
 
 # Send data to the DB
+print(f"====================\nSending Data Started...")
 for key, value in data.items():
     ref.child(key).set(value)
+print(f"Sending Data Completed...\n====================")
