@@ -1,14 +1,14 @@
+import tkinter as tk
+import util
+import cv2
+from PIL import Image, ImageTk
 import pickle
 import numpy as np
-import cv2
 import face_recognition
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import db
 from datetime import datetime
-import tkinter as tk
-import util
-from PIL import Image, ImageTk
 
 # Connect to Firebase
 cred = credentials.Certificate("serviceAccountKey.json")
@@ -16,12 +16,11 @@ firebase_admin.initialize_app(cred, {
     "databaseURL": "https://facelogin-5c710-default-rtdb.firebaseio.com/",
 })
 
-
 class App:
     # Load the encoding file
     # Generated from: EncodeGenerator.py
     def load_encoding_file(self):
-        print(f"====================\nLoading Encode File ...")
+        print(f"====================\nLoading Encode File...")
         self.file = open('EncodeFile.p', 'rb')
         self.encodeListKnownWithIds = pickle.load(self.file)
         self.file.close()
@@ -35,6 +34,7 @@ class App:
 
         ### --- Main Page --- ###
         self.main_window = tk.Tk()
+        self.main_window.title("FaceAuth - Login Page")
         self.main_window.geometry("1280x720+200+100")
 
         # Background
@@ -100,7 +100,7 @@ class App:
         counter = 0
 
         if faceCurFrame:
-            for encodeFace, faceLoc in zip(encodeCurFrame, faceCurFrame):
+            for encodeFace in encodeCurFrame:
                 self.matches = face_recognition.compare_faces(
                     self.encodeListKnown, encodeFace)
                 self.faceDis = face_recognition.face_distance(
@@ -114,8 +114,6 @@ class App:
                 if self.matches[matchIndex]:
                     # Set new threshold leads to more accurate result
                     if self.faceDis[matchIndex] < 0.45:
-                        y1, x2, y2, x1 = faceLoc
-                        y1, x2, y2, x1 = y1 * 4, x2 * 4, y2 * 4, x1 * 4
                         id = self.studentIds[matchIndex]
                         if counter == 0:
                             counter = 1
@@ -130,7 +128,9 @@ class App:
                 if counter == 1:
                     # Get the Data
                     studentInfo = db.reference(f'Students/{id}').get()
-                    print(studentInfo)
+                    print(f"====================\nRetrieved: {studentInfo}")
+                    print("====================")
+
                     util.msg_box("User Authenticated",
                                  f"User ID{id} is authenticated!")
                     self.main_window.destroy()
@@ -140,8 +140,9 @@ class App:
                     ref.child('last_authenticated').set(
                         datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
-                    ### --- Logged in Page --- ###
+                    ### --- User Page --- ###
                     logged_in_window = tk.Tk()
+                    logged_in_window.title("FaceAuth - User Page")
                     logged_in_window.geometry("600x600+600+200")
                     logged_in_window.config(bg='black')
 

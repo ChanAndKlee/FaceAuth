@@ -42,15 +42,15 @@ data = {
         "year" : 3,
         "last_authenticated" : "2022-02-22 12:00:01"
     },
-    "6388040":
-    {
-        "name" : "Ariya Phengphon",
-        "major" : "ICT",
-        "starting_year" : "2020",
-        "bloodType" : "B",
-        "year" : 3,
-        "last_authenticated" : "2022-12-26 11:45:00"
-    },
+    # "6388040":
+    # {
+    #     "name" : "Ariya Phengphon",
+    #     "major" : "ICT",
+    #     "starting_year" : "2020",
+    #     "bloodType" : "B",
+    #     "year" : 3,
+    #     "last_authenticated" : "2022-12-26 11:45:00"
+    # },
     "6388176":
     {
         "name" : "Prawit Wongsuwon",

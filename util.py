@@ -1,5 +1,6 @@
 ###
 # Interface (some components)
+# REF: https://github.com/computervisioneng/face-attendance-system
 ###
 
 import tkinter as tk
