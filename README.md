@@ -8,7 +8,8 @@
 ## Project Detail
 The present term project is part of ITCS461 Computer and Communication Security and
 has the objective of user authentication by obtaining facial input through the webcam
-and verifying its correspondence with the image stored in the database.
+and verifying its correspondence with the image stored in the database.  
+<img src="https://i.imgur.com/AtKP2UT.png" alt="faceauth_ex_output" width=600>
 
 ## Contributors
 - 6388030 Kulawut Makkamoltham
